@@ -18,6 +18,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton fab;
     PolylineOptions options;
     LatLng latLng;
+    Polyline polyline;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,13 +51,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
+
                 if(v.getTag().equals("0")) {
                     mapView.onPause();
                     gestureView.setEnabled(true);
                     v.setTag("1");
-
-
-
                 }
 
                 else {
@@ -66,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
 //                    a_y.clear();
 //                    x.clear();
                     i=0;
-
-
 
                 }
 
@@ -90,8 +89,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onGestureStarted(GestureOverlayView overlay, MotionEvent event) {
 
-
-
             }
 
             @Override
@@ -100,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
                 int o = i++;
                 a_x.add(Math.round( x.get(o).x));
                 a_y.add(Math.round(x.get(o).y));
+
+
 
                 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -126,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 options.add(options.getPoints().get(0));
                 createMap();
-                map.addPolyline(options);
+               polyline = map.addPolyline(options);
 
                 //mapView.onResume();
 
