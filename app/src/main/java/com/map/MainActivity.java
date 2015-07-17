@@ -2,6 +2,7 @@ package com.map;
 
 import android.gesture.GestureOverlayView;
 import android.gesture.GesturePoint;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.widget.Toast;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,6 +18,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -30,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     Projection projection;
     double Lat,Lng;
     Point x_y_points;
+    FloatingActionButton fab;
+    PolylineOptions options;
+    LatLng latLng;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,14 +44,41 @@ public class MainActivity extends AppCompatActivity {
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         onGesture();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(v.getTag().equals("0")) {
+                    mapView.onPause();
+                    gestureView.setEnabled(true);
+                    v.setTag("1");
+                }
+
+                else {
+                    mapView.onResume();
+                    gestureView.setEnabled(false);
+                    v.setTag("0");
+                }
+
+               // Log.e("hi-->", "kkokokook");
+            }
+        });
     }
+
+    public void btnG(View view)
+    {
+
+    }
+
+
 
     private void onGesture() {
         gestureView.addOnGestureListener(new GestureOverlayView.OnGestureListener() {
             @Override
             public void onGestureStarted(GestureOverlayView overlay, MotionEvent event) {
 
-                mapView.onPause();
+
 
             }
 
@@ -68,21 +101,30 @@ public class MainActivity extends AppCompatActivity {
                 {
                     projection = map.getProjection();
                     x_y_points = new Point(a_x.get(q),a_y.get(q));
-                    LatLng latLng = map.getProjection().fromScreenLocation(x_y_points);
+                    latLng = map.getProjection().fromScreenLocation(x_y_points);
                     Lat = latLng.latitude;
                     Lng = latLng.longitude;
 
-                    Log.e("x = ",String.valueOf(Lat));
-                    Log.e("y = ",String.valueOf(Lng));
-                }
+//                    Log.e("x = ",String.valueOf(Lat));
+//                    Log.e("y = ",String.valueOf(Lng));
+                    options.add(latLng);
+                    Log.e("x = ",String.valueOf(latLng));
 
+
+                }
+                options.add(options.getPoints().get(0));
+                createMap();
+                map.addPolyline(options);
+                gestureView.clear(true);
                 //mapView.onResume();
 
 
-                Toast.makeText(MainActivity.this,a_x.toString(), Toast.LENGTH_SHORT).show();
+
 
                // Log.e("x = ",a_x.toString());
                // Log.e("y = ",a_y.toString());
+
+
             }
 
             @Override
@@ -92,12 +134,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+
     private void initialize() {
         mapView = (MapView)findViewById(R.id.map);
         gestureView = (GestureOverlayView) findViewById(R.id.signaturePad);
         a_x = new ArrayList<Integer>();
         a_y = new ArrayList<Integer>();
-
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        options = new PolylineOptions().width(5).color(Color.BLACK).geodesic(false);
         i = 0;
     }
 
@@ -106,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         storeItem();
         createMap();
+        gestureView.setEnabled(false);
     }
 
     private void storeItem() {
@@ -118,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
         map = mapView.getMap();
         map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         map.setMyLocationEnabled(true);
-
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(22.540735, 88.373858), 11));
 
 
