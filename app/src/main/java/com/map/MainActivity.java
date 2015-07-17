@@ -53,15 +53,26 @@ public class MainActivity extends AppCompatActivity {
                     mapView.onPause();
                     gestureView.setEnabled(true);
                     v.setTag("1");
+
+
                 }
 
                 else {
                     mapView.onResume();
                     gestureView.setEnabled(false);
                     v.setTag("0");
+                    a_x.clear();
+                    a_y.clear();
+                    x.clear();
+                    a_y.clear();
+                    a_x.clear();
+                    i=0;
+
                 }
 
                // Log.e("hi-->", "kkokokook");
+                gestureView.cancelClearAnimation();
+                gestureView.clear(true);
             }
         });
     }
@@ -115,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 options.add(options.getPoints().get(0));
                 createMap();
                 map.addPolyline(options);
-                gestureView.clear(true);
+
                 //mapView.onResume();
 
 
