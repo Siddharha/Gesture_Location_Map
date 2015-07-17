@@ -55,18 +55,19 @@ public class MainActivity extends AppCompatActivity {
                     v.setTag("1");
 
 
+
                 }
 
                 else {
                     mapView.onResume();
                     gestureView.setEnabled(false);
                     v.setTag("0");
-                    a_x.clear();
-                    a_y.clear();
-                    x.clear();
-                    a_y.clear();
-                    a_x.clear();
+//                    a_x.clear();
+//                    a_y.clear();
+//                    x.clear();
                     i=0;
+
+
 
                 }
 
