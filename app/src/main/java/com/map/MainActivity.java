@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
         gestureView.addOnGestureListener(new GestureOverlayView.OnGestureListener() {
             @Override
             public void onGestureStarted(GestureOverlayView overlay, MotionEvent event) {
-
             }
 
             @Override
@@ -120,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.e("y = ",String.valueOf(Lng));
                     options.add(latLng);
                     Log.e("x = ",String.valueOf(latLng));
-
 
                 }
                 options.add(options.getPoints().get(0));
