@@ -16,11 +16,12 @@
             android:layout_height="wrap_content"
             android:tag="0"
             android:onClick="btnG"
-            android:src="@drawable/abc_ic_menu_copy_mtrl_am_alpha"
+            android:src="@drawable/ic_gesture_l"
             android:layout_alignBottom="@+id/signaturePad"
             android:layout_alignRight="@+id/signaturePad"
             android:layout_alignEnd="@+id/signaturePad" android:layout_marginRight="36dp"
-            android:layout_marginEnd="36dp" android:layout_marginBottom="35dp"/>
+            android:layout_marginEnd="36dp" android:layout_marginBottom="35dp"
+            android:scaleType="fitXY"/>
 
     <android.gesture.GestureOverlayView
         android:id="@+id/signaturePad"

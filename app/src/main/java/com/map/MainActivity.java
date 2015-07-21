@@ -71,15 +71,19 @@ public class MainActivity extends AppCompatActivity {
                     v.setTag("0");
                  //   a_x.clear();
                  //   a_y.clear();
-                    x.clear();
+                 //   x.equals("");
                    // x_y_points.set(0,0);
                     i=0;
                     imageView.setVisibility(View.GONE);
+                    createMap();
+
                 }//
 
                // Log.e("hi-->", "kkokokook");
                 gestureView.cancelClearAnimation();
                 gestureView.clear(true);
+
+
 
 
             }
@@ -185,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
         map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         map.setMyLocationEnabled(true);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(22.540735, 88.373858), 11));
+
 
 
     }
