@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     PolylineOptions options;
     LatLng latLng;
     Polyline polyline;
+
+    ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         onGesture();
+        imageView.setVisibility(View.GONE);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,22 +62,26 @@ public class MainActivity extends AppCompatActivity {
                     mapView.onPause();
                     gestureView.setEnabled(true);
                     v.setTag("1");
+                    imageView.setVisibility(View.VISIBLE);
                 }
 
                 else {
                     mapView.onResume();
                     gestureView.setEnabled(false);
                     v.setTag("0");
-//                    a_x.clear();
-//                    a_y.clear();
-//                    x.clear();
+                 //   a_x.clear();
+                 //   a_y.clear();
+                    x.clear();
+                   // x_y_points.set(0,0);
                     i=0;
-
-                }
+                    imageView.setVisibility(View.GONE);
+                }//
 
                // Log.e("hi-->", "kkokokook");
                 gestureView.cancelClearAnimation();
                 gestureView.clear(true);
+
+
             }
         });
     }
@@ -124,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 options.add(options.getPoints().get(0));
                 createMap();
                polyline = map.addPolyline(options);
-
+              // mapView.setZ(500);
                 //mapView.onResume();
 
 
@@ -152,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
         a_y = new ArrayList<Integer>();
         fab = (FloatingActionButton) findViewById(R.id.fab);
         options = new PolylineOptions().width(5).color(Color.BLACK).geodesic(false);
+        imageView = (ImageView)findViewById(R.id. imageView);
         i = 0;
     }
 
@@ -161,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
         storeItem();
         createMap();
         gestureView.setEnabled(false);
+
     }
 
     private void storeItem() {
