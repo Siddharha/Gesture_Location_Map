@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private GoogleMap map;
     GestureOverlayView gestureView;
     ArrayList<Integer> a_x,a_y;
-    Integer i;
+    Integer i,q;
     ArrayList<GesturePoint> x;
     Projection projection;
     double Lat,Lng;
@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
     PolylineOptions options;
     LatLng latLng;
     Polyline polyline;
-
     ImageView imageView;
+    Boolean xx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,39 +51,24 @@ public class MainActivity extends AppCompatActivity {
         mapView.onResume();
         onGesture();
         imageView.setVisibility(View.GONE);
-
+        xx = false;
+        Log.e("Gesture : ",String.valueOf(xx));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-
-                if(v.getTag().equals("0")) {
-                    mapView.onPause();
-                    gestureView.setEnabled(true);
-                    v.setTag("1");
-                    imageView.setVisibility(View.VISIBLE);
+                if(xx)
+                {
+                    polyline.remove();
+                    mapView.refreshDrawableState();
+                    gestureView.clear(true);
+                    options = new PolylineOptions().width(5).color(Color.RED).geodesic(false);
+                    Log.e("points : ", options.getPoints().toString());
                 }
 
-                else {
-                    mapView.onResume();
-                    gestureView.setEnabled(false);
-                    v.setTag("0");
-                 //   a_x.clear();
-                 //   a_y.clear();
-                 //   x.equals("");
-                   // x_y_points.set(0,0);
-                    i=0;
-                    imageView.setVisibility(View.GONE);
-                    createMap();
-
-                }//
-
-               // Log.e("hi-->", "kkokokook");
-                gestureView.cancelClearAnimation();
-                gestureView.clear(true);
-
-
+                imageView.setVisibility(View.VISIBLE);
+                mapView.onPause();
+                gestureView.setEnabled(true);
 
 
             }
@@ -97,18 +82,26 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     private void onGesture() {
         gestureView.addOnGestureListener(new GestureOverlayView.OnGestureListener() {
             @Override
             public void onGestureStarted(GestureOverlayView overlay, MotionEvent event) {
+
+                Log.e("Stroke : ","Started...");
+                xx = true;
+                Log.e("Gesture : ",String.valueOf(xx));
             }
 
             @Override
             public void onGesture(GestureOverlayView overlay, MotionEvent event) {
                 x = gestureView.getCurrentStroke();
-                int o = i++;
+
+               int o = i++;
                 a_x.add(Math.round( x.get(o).x));
                 a_y.add(Math.round(x.get(o).y));
+
+
 
 
 
@@ -120,37 +113,43 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onGestureEnded(GestureOverlayView overlay, MotionEvent event) {
 
-                for(int q=0;q<a_x.size();q++)
+                for(q =0 ;q<a_x.size();q++)
                 {
                     projection = map.getProjection();
                     x_y_points = new Point(a_x.get(q),a_y.get(q));
                     latLng = map.getProjection().fromScreenLocation(x_y_points);
                     Lat = latLng.latitude;
                     Lng = latLng.longitude;
-
-//                    Log.e("x = ",String.valueOf(Lat));
-//                    Log.e("y = ",String.valueOf(Lng));
                     options.add(latLng);
                     Log.e("x = ",String.valueOf(latLng));
-
                 }
-                options.add(options.getPoints().get(0));
-                createMap();
-               polyline = map.addPolyline(options);
-              // mapView.setZ(500);
-                //mapView.onResume();
 
-
-
-
-               // Log.e("x = ",a_x.toString());
-               // Log.e("y = ",a_y.toString());
-
-
+                gestureView.cancelGesture();
             }
 
             @Override
             public void onGestureCancelled(GestureOverlayView overlay, MotionEvent event) {
+
+                mapView.onResume();
+                imageView.setVisibility(View.GONE);
+                gestureView.setEnabled(false);
+                gestureView.clear(true);
+                options.add(options.getPoints().get(0));
+                createMap();
+                a_x.clear();
+                a_y.clear();
+
+                if(xx)
+                {
+
+                    polyline = map.addPolyline(options);
+                }
+
+
+
+
+                i = 0;
+                q = 0;
 
             }
         });
@@ -158,15 +157,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     private void initialize() {
         mapView = (MapView)findViewById(R.id.map);
         gestureView = (GestureOverlayView) findViewById(R.id.signaturePad);
-        a_x = new ArrayList<Integer>();
-        a_y = new ArrayList<Integer>();
+        a_x = new ArrayList<>();
+        a_y = new ArrayList<>();
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        options = new PolylineOptions().width(5).color(Color.BLACK).geodesic(false);
+        options = new PolylineOptions().width(5).color(Color.RED).geodesic(true);
         imageView = (ImageView)findViewById(R.id. imageView);
-        i = 0;
+        i = 0; q =0;
     }
 
     @Override
